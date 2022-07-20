@@ -7,7 +7,7 @@ echo 开始申请$DOMAIN的域名证书
 
 service nginx stop
 
-~/.acme.sh/acme.sh --issue --standalone -d ${DOMAIN} --keylength ec-256 --force
+~/.acme.sh/acme.sh --issue --standalone -d ${DOMAIN} --keylength ec-256 --force --pre-hook "service nginx stop"  --post-hook  "service nginx start"
 
 mkdir -p /etc/nginx/ssl/${DOMAIN}
 
