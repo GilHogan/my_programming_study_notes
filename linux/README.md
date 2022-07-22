@@ -2,23 +2,29 @@
 ```shell
 # xxx.xxx.xxx 更换为需要申请的域名
 DOMAIN=xxx.xxx.xxx
+# 证书颁发机构; acme.sh v3版本使用 Zerossl 作为默认证书颁发机构 (CA); 注意使用ZeroSSL颁发证书需要先注册账户 参考 - https://github.com/acmesh-official/acme.sh/wiki/ZeroSSL.com-CA
+# CA列表 参考 - https://github.com/acmesh-official/acme.sh/wiki/Server
+CA=letsencrypt
 
 echo 开始申请$DOMAIN的域名证书
 
-service nginx stop
-
-~/.acme.sh/acme.sh --issue --standalone -d ${DOMAIN} --keylength ec-256 --force --pre-hook "service nginx stop"  --post-hook  "service nginx start"
+# 申请证书；这里指定的所有参数都会被自动记录下来, 并在将来证书自动更新以后, 被再次自动调用。
+~/.acme.sh/acme.sh --issue --standalone -d ${DOMAIN} \
+                          --server ${CA} --keylength ec-256 --force \
+                          --pre-hook "systemctl stop nginx.service"  --post-hook  "systemctl restart nginx.service"
 
 mkdir -p /etc/nginx/ssl/${DOMAIN}
 
+# 创建定时更新证书任务；默认情况下，证书将每60天更新一次；这里指定的所有参数都会被自动记录下来, 并在将来证书自动更新以后, 被再次自动调用。
 ~/.acme.sh/acme.sh --install-cert -d ${DOMAIN} \
                 --key-file       /etc/nginx/ssl/${DOMAIN}/key.pem  \
                 --fullchain-file /etc/nginx/ssl/${DOMAIN}/cert.pem \
                 --ecc --force \
-                --pre-hook "service nginx stop"  --post-hook  "service nginx start" \
-                --server letsencrypt
+                --pre-hook "systemctl stop nginx.service"  --post-hook  "systemctl restart nginx.service" \
+                --server ${CA}
 
-service nginx restart
+# 查看已安装证书信息
+~/.acme.sh/acme.sh --info -d ${DOMAIN} --ecc
 
 echo 申请结束
 ```
