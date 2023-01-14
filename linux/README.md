@@ -1,7 +1,9 @@
 ### acme申请单域名ssl证书的脚本 standalone模式
 ```shell
-# xxx.xxx.xxx 更换为需要申请的域名
-DOMAIN=xxx.xxx.xxx
+echo -e "请输入需要申请的域名，格式xxx.xxx.xxx"
+read DOMAIN
+echo "申请的域名为： ${DOMAIN}"
+
 # 证书颁发机构; acme.sh v3版本使用 Zerossl 作为默认证书颁发机构 (CA); 注意使用ZeroSSL颁发证书需要先注册账户 参考 - https://github.com/acmesh-official/acme.sh/wiki/ZeroSSL.com-CA
 # CA列表 参考 - https://github.com/acmesh-official/acme.sh/wiki/Server
 CA=letsencrypt
@@ -29,10 +31,13 @@ mkdir -p /etc/nginx/ssl/${DOMAIN}
 echo 申请结束
 ```
 
-### acme申请单域名ssl证书的脚本  webroot模式（需要服务端能访问到该域名的网页）
+### acme申请单域名ssl证书的脚本  webroot模式
+#### （需要通过nginx提前部署该域名到80端口, /projects/web/${DOMAIN} 为nginx配置该域名的跟路径）
 ```shell
-# xxx.xxx.xxx 更换为需要申请的域名
-DOMAIN=xxx.xxx.xxx
+echo -e "请输入需要申请的域名，格式xxx.xxx.xxx"
+read DOMAIN
+echo "申请的域名为： ${DOMAIN}"
+
 # 证书颁发机构; acme.sh v3版本使用 Zerossl 作为默认证书颁发机构 (CA); 注意使用ZeroSSL颁发证书需要先注册账户 参考 - https://github.com/acmesh-official/acme.sh/wiki/ZeroSSL.com-CA
 # CA列表 参考 - https://github.com/acmesh-official/acme.sh/wiki/Server
 CA=letsencrypt
@@ -43,7 +48,7 @@ mkdir -p /ssl/${DOMAIN}
 
 # 申请证书(webroot方式)；这里指定的所有参数都会被自动记录下来, 并在将来证书自动更新以后, 被再次自动调用。
 ~/.acme.sh/acme.sh --issue -d ${DOMAIN} \
-        --webroot /ssl/ \
+        --webroot /projects/web/${DOMAIN} \
         --keylength ec-256 --force \
         --server ${CA}
 
