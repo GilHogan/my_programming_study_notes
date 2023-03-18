@@ -91,3 +91,31 @@ server {
 
 }
 ```
+
+### acme webroot模式 nginx ssl 配置示例
+```conf
+server {
+
+        listen       80;
+        listen       [::]:80;
+        listen       443 ssl;
+        listen       [::]:443 ssl;
+        server_name  xxx.xxx.xxx;
+
+        ssl_certificate         /ssl/xxx.xxx.xxx/fullchain.crt;
+        ssl_certificate_key     /ssl/xxx.xxx.xxx/cert.key;
+        ssl_protocols         TLSv1.1 TLSv1.2 TLSv1.3;
+        ssl_ciphers           TLS13-AES-256-GCM-SHA384:TLS13-CHACHA20-POLY1305-SHA256:TLS13-AES-128-GCM-SHA256:TLS13-AES-128-CCM-8-SHA256:TLS13-AES-128-CCM-SHA256:EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+ECDSA+AES128:EECDH+aRSA+AES128:RSA+AES128:EECDH+ECDSA+AES256:EECDH+aRSA+AES256:RSA+AES256:EECDH+ECDSA+3DES:EECDH+aRSA+3DES:RSA+3DES:!MD5;
+
+        # root /projects/web/xxx.xxx.xxx;
+
+        location / {
+                alias /projects/web/xxx.xxx.xxx/;
+                index  index.html;
+                try_files $uri $uri/ /index.html;
+                #add_header  Cache-Control  max-age=no-cache;
+        }
+        
+
+}
+```
