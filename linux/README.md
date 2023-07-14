@@ -21,9 +21,7 @@ mkdir -p /etc/nginx/ssl/${DOMAIN}
 ~/.acme.sh/acme.sh --install-cert -d ${DOMAIN} \
                 --key-file       /etc/nginx/ssl/${DOMAIN}/key.pem  \
                 --fullchain-file /etc/nginx/ssl/${DOMAIN}/cert.pem \
-                --ecc --force \
-                --pre-hook "systemctl stop nginx.service"  --post-hook  "systemctl restart nginx.service" \
-                --server ${CA}
+                --ecc --force
 
 # 查看已安装证书信息
 ~/.acme.sh/acme.sh --info -d ${DOMAIN} --ecc
@@ -57,8 +55,7 @@ mkdir -p /ssl/${DOMAIN}
 ~/.acme.sh/acme.sh --installcert -d ${DOMAIN} \
         --cert-file /ssl/${DOMAIN}/cert.crt \
         --key-file /ssl/${DOMAIN}/cert.key \
-        --fullchain-file /ssl/${DOMAIN}/fullchain.crt --ecc --force \
-        --post-hook "nginx -s reload"
+        --fullchain-file /ssl/${DOMAIN}/fullchain.crt --ecc --force
 
 # 查看已安装证书信息
 ~/.acme.sh/acme.sh --info -d ${DOMAIN} --ecc
