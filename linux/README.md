@@ -45,6 +45,7 @@ echo 开始申请$DOMAIN的域名证书
 mkdir -p /ssl/${DOMAIN}
 
 # 申请证书(webroot方式)；这里指定的所有参数都会被自动记录下来, 并在将来证书自动更新以后, 被再次自动调用。
+# 注意证书由xray管理时，post-hook中的命令需要重启xray
 ~/.acme.sh/acme.sh --issue -d ${DOMAIN} \
         --webroot /projects/web/${DOMAIN} \
         --keylength ec-256 --force \
