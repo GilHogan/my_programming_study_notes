@@ -26,6 +26,9 @@ mkdir -p /etc/nginx/ssl/${DOMAIN}
 # 查看已安装证书信息
 ~/.acme.sh/acme.sh --info -d ${DOMAIN} --ecc
 
+# 安装定时任务
+~/.acme.sh/acme.sh --install-cronjob
+
 echo 申请结束
 ```
 
@@ -60,6 +63,9 @@ mkdir -p /ssl/${DOMAIN}
 
 # 查看已安装证书信息
 ~/.acme.sh/acme.sh --info -d ${DOMAIN} --ecc
+
+# 安装定时任务
+~/.acme.sh/acme.sh --install-cronjob
 
 echo 申请结束
 ```
