@@ -15,13 +15,13 @@ echo 开始申请$DOMAIN的域名证书
                           --server ${CA} --keylength ec-256 --force \
                           --pre-hook "systemctl stop nginx.service"  --post-hook  "systemctl restart nginx.service"
 
-mkdir -p /etc/nginx/ssl/${DOMAIN}
+mkdir -p /ssl/${DOMAIN}
 
 # 创建定时更新证书任务；默认情况下，证书将每60天更新一次；这里指定的所有参数都会被自动记录下来, 并在将来证书自动更新以后, 被再次自动调用。
 ~/.acme.sh/acme.sh --install-cert -d ${DOMAIN} \
-                --key-file       /etc/nginx/ssl/${DOMAIN}/key.pem  \
-                --fullchain-file /etc/nginx/ssl/${DOMAIN}/cert.pem \
-                --ecc --force
+          --cert-file /ssl/${DOMAIN}/cert.crt \
+          --key-file /ssl/${DOMAIN}/cert.key \
+          --fullchain-file /ssl/${DOMAIN}/fullchain.crt --ecc --force
 
 # 查看已安装证书信息
 ~/.acme.sh/acme.sh --info -d ${DOMAIN} --ecc
