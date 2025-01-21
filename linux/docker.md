@@ -17,7 +17,7 @@ CMD ./NeverIdle -c 12h -m ${custom_memory} -n 12h
 
 ### docker mysql 安装
 ```conf
-docker run --name mysql8 -p 3307:3306 --restart=unless-stopped -v /etc/mysql8/data:/var/lib/mysql -v /etc/mysql8/conf.d:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=shh@2024 -d mysql:8 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower-case-table-names=1
+docker run --name mysql8 -p 3307:3306 --restart=unless-stopped -v /etc/mysql8/data:/var/lib/mysql -v /etc/mysql8/conf.d:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=123456 -d mysql:8 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --lower-case-table-names=1
 ```
 
 ### docker nginx-http3 安装
