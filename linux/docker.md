@@ -30,3 +30,14 @@ docker run --restart unless-stopped --cap-add=NET_BIND_SERVICE --network host --
   --name nginx \
   -t macbre/nginx-http3
 ```
+### docker nginx 安装
+```conf
+docker run -d \
+  --name nginx --restart unless-stopped --cap-add=NET_BIND_SERVICE --network host --user root \
+  -e "TZ=Asia/Shanghai" \
+  -v "/web/path":/web/path:ro \
+  -v "/etc/nginx/conf.d/":/etc/nginx/conf.d/:ro \
+  -v "/etc/nginx/nginx.conf":/etc/nginx/nginx.conf:ro \
+  -v "/ssl":/ssl:ro \
+  nginx
+```
